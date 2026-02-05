@@ -1,0 +1,85 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('games');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<'games'>;
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={`${post.data.title} | Games`} description={post.data.description}>
+	<article class="py-8">
+        <!-- Header Section -->
+		<div class="mb-8 text-center">
+            {post.data.heroImage && (
+                <div class="mb-8 rounded-xl overflow-hidden shadow-lg border border-gray-100">
+                    <Image 
+                        width={1020} 
+                        height={510} 
+                        src={post.data.heroImage} 
+                        alt="" 
+                        class="w-full h-auto object-cover"
+                    />
+                </div>
+            )}
+			<div class="mb-4">
+                <span class={`
+                    inline-block px-3 py-1 text-sm font-semibold rounded-full 
+                    ${post.data.status === '発売中' ? 'bg-green-100 text-green-800' : 
+                      post.data.status === '開発中' ? 'bg-teal-100 text-teal-800' : 
+                      'bg-slate-100 text-slate-800'}
+                `}>
+                    {post.data.status}
+                </span>
+            </div>
+			<h1 class="text-4xl font-bold text-gray-900 mb-4">{post.data.title}</h1>
+            <p class="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">{post.data.description}</p>
+            
+            <!-- Metadata Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-lg mx-auto bg-slate-50 rounded-lg p-6 text-left">
+                <div>
+                    <span class="block text-xs font-bold text-slate-500 uppercase tracking-wide">リリース日</span>
+                    <span class="block mt-1 font-medium">
+                        {post.data.releaseDate || '未定'}
+                    </span>
+                </div>
+                <div>
+                    <span class="block text-xs font-bold text-slate-500 uppercase tracking-wide">プラットフォーム</span>
+                    <div class="mt-1 flex flex-wrap gap-2">
+                        {post.data.platforms?.map((p: string) => (
+                            <span class="bg-white border border-slate-200 px-2 py-0.5 rounded text-sm">{p}</span>
+                        )) || '未定'}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Links -->
+            {post.data.links && (
+                <div class="mt-8 flex justify-center gap-4">
+                    {post.data.links.steam && (
+                        <a href={post.data.links.steam} target="_blank" class="inline-flex items-center px-6 py-3 bg-[#171a21] text-white rounded-lg hover:bg-gray-800 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M11.979 0C5.666 0 .506 5.293.012 11.666l4.636 1.914c.828-.624 1.865-1.002 2.991-1.002 2.686 0 4.885 2.115 5.044 4.767l4.496.639c.306-4.576 3.972-8.216 8.563-8.521L25.746 9.4A12.02 12.02 0 0 0 11.979 0z"/></svg>
+                            Steam Store
+                        </a>
+                    )}
+                    {/* Other links can be added here */}
+                </div>
+            )}
+		</div>
+
+        <!-- Main Content (Markdown) -->
+		<div class="prose prose-lg mx-auto prose-headings:font-bold prose-a:text-teal-700">
+			<Content />
+		</div>
+	</article>
+</Layout>

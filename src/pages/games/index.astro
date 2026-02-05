@@ -1,0 +1,69 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const games = (await getCollection('games')).sort(
+    // releaseDateが文字列になったため、ソートロジックを調整（単純な文字列比較または日付変換可能なもののみ比較）
+    // 大雑把なソートになるが、実運用上は手動で並び替えるか、frontmatterにsortOrderを追加するのが一般的。
+    // ここでは簡易的に文字列として比較して降順にする。
+	(a, b) => (b.data.releaseDate || '').localeCompare(a.data.releaseDate || '')
+);
+---
+
+<Layout title="Games | 直手有為のページ" description="これまでに制作したゲーム作品の一覧です。">
+	<section class="py-12">
+		<h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">Games</h1>
+		
+		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
+			{
+				games.map((game) => (
+					<a href={`/games/${game.id}/`} class="group relative block bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100">
+						<div class="aspect-video w-full overflow-hidden bg-gray-100 relative">
+                            {
+                                game.data.coverImage ? (
+                                    <Image
+                                        src={game.data.coverImage}
+                                        alt={game.data.title}
+                                        width={800}
+                                        height={450}
+                                        class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                ) : (
+                                    <div class="flex items-center justify-center w-full h-full text-gray-400">
+                                        No Image
+                                    </div>
+                                )
+                            }
+                            <div class="absolute top-2 right-2">
+                                <span class={`
+                                    px-3 py-1 text-xs font-semibold rounded-full shadow-sm
+                                    ${game.data.status === '発売中' ? 'bg-green-100 text-green-800' : 
+                                      game.data.status === '開発中' ? 'bg-teal-100 text-teal-800' : 
+                                      'bg-slate-100 text-slate-800'}
+                                `}>
+                                    {game.data.status}
+                                </span>
+                            </div>
+						</div>
+						<div class="p-6">
+							<h2 class="text-2xl font-bold text-slate-900 mb-2 group-hover:text-teal-700 transition-colors">
+								{game.data.title}
+							</h2>
+							<p class="text-slate-600 line-clamp-2 mb-4">
+								{game.data.description}
+							</p>
+                            <div class="flex flex-wrap gap-2">
+                                {game.data.platforms && game.data.platforms.map((platform: string) => (
+                                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-700">
+                                        {platform}
+                                    </span>
+                                ))}
+                            </div>
+						</div>
+					</a>
+				))
+			}
+		</div>
+	</section>
+</Layout>

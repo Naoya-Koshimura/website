@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import aboutImg from '../assets/ただてうい.png';
+---
+
+<Layout title="About Me | 直手有為のページ" description="プロフィール">
+	<div class="max-w-3xl mx-auto py-8">
+        <h1 class="text-4xl font-bold mb-8 text-center">About Me</h1>
+        
+        <div class="mb-8 rounded-xl overflow-hidden shadow-md">
+            <Image src={aboutImg} alt="Workspace" class="w-full h-auto" />
+        </div>
+
+        <div class="prose prose-lg mx-auto text-gray-700">
+            <p>
+                インディーゲームクリエイターの直手有為（ただて　うい）です。
+            </p>
+            <br />
+            <p>
+                革新的で芸術的で哲学的なゲームをたくさん作りたいと思っています。
+                僕について詳しいことは、ブログをご覧ください。（メモ：あとでリンクを貼る）
+            </p>
+            
+            <br />
+
+            <h3>略歴</h3>
+            <ul>
+                <li>2022年：ゲーム制作を開始</li>
+                <li>2026年3月：処女作『星を編んで空を描く』を発売予定。さらに、同月中に『名付けられた病』、『他者の実在の検証可能性について』、『AIシミュレーター』を連続発売予定。</li>
+            </ul>
+            <br />
+            <h3>趣味</h3>
+            <ul>
+                <li>ゲーム、考え事、AIとの会話、哲学、作曲、ケモノ</li>
+            </ul>
+        </div>
+	</div>
+</Layout>

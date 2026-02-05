@@ -1,0 +1,36 @@
+---
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+	<nav class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+		<h2 class="text-xl font-bold tracking-tight">
+			<a href="/" class="hover:text-teal-700 transition-colors duration-200">
+				直手有為（ただて　うい）のページ
+			</a>
+		</h2>
+
+		<div class="hidden sm:flex items-center gap-6 text-sm font-medium">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/games">Games</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/contact">Contact</HeaderLink>
+		</div>
+
+        {/* 
+		<div class="flex items-center gap-4">
+			<a href="https://x.com" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-black transition-colors" aria-label="X (Twitter)">
+				<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+					<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+				</svg>
+			</a>
+			<a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-[#171a21] transition-colors" aria-label="Steam">
+				<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11.979 0C5.666 0 .506 5.293.012 11.666l4.636 1.914c.828-.624 1.865-1.002 2.991-1.002 2.686 0 4.885 2.115 5.044 4.767l4.496.639c.306-4.576 3.972-8.216 8.563-8.521L25.746 9.4A12.02 12.02 0 0 0 11.979 0zM7.227 13.975c-1.576 0-2.859 1.282-2.859 2.858s1.283 2.859 2.859 2.859 2.859-1.283 2.859-2.859-1.283-2.858-2.859-2.858zm0 1.226a1.632 1.632 0 1 1 0 3.264 1.632 1.632 0 0 1 0-3.264zm11.753 1.218l-4.21-.601c-.13.385-.23.784-.287 1.198l4.246 1.765a3.996 3.996 0 0 0 .251-2.362zm-1.896.793l-3.693-1.536a3.398 3.398 0 0 1 1.764 1.764l1.929-1.139v.911zm-2.071 2.502l-1.929 1.139a3.407 3.407 0 0 1-.849-.849l2.778-2.778v2.488z" transform="scale(0.8) translate(3,3)"/>
+				</svg>
+			</a>
+		</div>
+        */}
+	</nav>
+</header>

@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+import { Image } from 'astro:assets'; // Imageコンポーネントを追加
+import mainVisual from '../assets/トップ.jpg';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+).slice(0, 3); // 最新3件のみ表示
+---
+
+<Layout>
+	<!-- Hero Section -->
+	<section class="py-12 md:py-20 text-center">
+        <!-- Main Visual -->
+        <div class="mb-12 rounded-xl overflow-hidden shadow-xl border border-slate-100 max-w-4xl mx-auto">
+            <Image 
+                src={mainVisual} 
+                alt="メインビジュアル" 
+                class="w-full h-auto"
+                width={1280}
+                quality="high"
+            />
+        </div>
+
+		<h1 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6">
+			ただて　うい　です。
+		</h1>
+		<p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+			インディーゲームクリエイターの直手有為（ただて うい）です。<br />
+			革新的で芸術的で哲学的なゲームをたくさん作りたいと思っています。
+		</p>
+		<div class="mt-8 flex justify-center gap-4">
+			<a href="/games" class="px-6 py-3 bg-teal-700 text-white font-medium rounded-lg hover:bg-teal-800 transition-colors shadow-sm">
+				View Games
+			</a>
+			<a href="/about" class="px-6 py-3 bg-white text-slate-700 font-medium rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors shadow-sm">
+				About Me
+			</a>
+		</div>
+	</section> <!-- 閉じタグを追加 -->
+
+	<!-- Latest Blog Posts -->
+	<section class="py-12 border-t border-slate-200">
+		<div class="flex items-center justify-between mb-8">
+			<h2 class="text-2xl font-bold text-slate-900">Latest Blog Posts</h2>
+			<a href="/blog" class="text-teal-700 hover:text-teal-900 text-sm font-medium">View all &rarr;</a>
+		</div>
+		
+		<div class="grid gap-8 md:grid-cols-3">
+			{
+				posts.map((post) => (
+					<article class="group relative flex flex-col items-start">
+						<a href={`/blog/${post.id}/`} class="block w-full mb-4 overflow-hidden rounded-lg bg-slate-100 aspect-[16/9]">
+                            {/* Imageコンポーネントを使用し、存在確認を行う */}
+                            {post.data.heroImage ? (
+                                <Image 
+                                    width={720} 
+                                    height={360} 
+                                    src={post.data.heroImage} 
+                                    alt="" 
+                                    class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                                />
+                            ) : (
+                                <div class="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
+                                    No Image
+                                </div>
+                            )}
+						</a>
+						<div class="flex items-center gap-x-4 text-xs">
+							<FormattedDate date={post.data.pubDate} />
+						</div>
+						<h3 class="mt-2 text-lg font-semibold leading-6 text-slate-900 group-hover:text-teal-700 transition-colors">
+							<a href={`/blog/${post.id}/`}>
+								<span class="absolute inset-0"></span>
+								{post.data.title}
+							</a>
+						</h3>
+						<p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
+							{post.data.description}
+						</p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+</Layout>
